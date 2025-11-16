@@ -6,18 +6,30 @@
   <body> 
     <h1>Guestbook</h1> 
 
+    <div>
     <h2>Leave a message</h2>
     <form action="/add" method="POST"> 
       <input type="text" name="author" placeholder="Username" required>
       <input type="text" name="body" placeholder="Message" required> 
       <button type="submit">Submit</button>
     </form>
+    </div> 
+    
+    </div>
+    <h2>response</h2> 
+    <form action="/addResponse" method="POST"> 
+      <input type="text" name="author" placeholder="Username" required> 
+      <input type="text" name="body" placeholder="Message" required> 
+        <button type="submut">Submit</button> 
+    </form> 
+    </div>
 
     <h2>Entries</h2>
     {% for entry in datas %}
     <div>
         <strong>{{ entry[1] }}</strong>: {{ entry[2] }}
         <small>({{ entry[3] }})</small>
+        <a href="/?reply_to={{ entry[0] }}">Reply</a>
     </div>
     {% endfor %}
   </body>

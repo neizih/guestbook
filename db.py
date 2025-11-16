@@ -1,34 +1,29 @@
-import sqlite3 as sql 
+import sqlite3 as sql
 
-# connects to sqlite
-con = sql.connect('database.db') 
+con = sql.connect('database.db')
+cur = con.cursor()
 
-# creates a connection
-cur = con.cursor() 
+cur.execute("DROP TABLE IF EXISTS entries")
+cur.execute("DROP TABLE IF EXISTS responses")
 
-#drops table if already exists
-cur.execute("DROP TABLE IF EXISTS entries") 
-cur.execute("DROP TABLE IF EXISTS response") 
-
-# create entries table id database.db
-create_table = '''CREATE TABLE "entries"(
+create_entries = '''CREATE TABLE "entries"(
         "id" INTEGER PRIMARY KEY AUTOINCREMENT,
         "author" TEXT NOT NULL,
-        "body" TEXT NOT NULL, 
-        "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        "responses" INTEGER,
-        )'''
-
-create_response_table = '''CREATE TABLE "entries"(
-        "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-        "author" TEXT NOT NULL,
-        "body" TEXT NOT NULL, 
+        "body" TEXT NOT NULL,
         "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )'''
 
+create_responses = '''CREATE TABLE "responses"(
+        "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+        "entry_id" INTEGER NOT NULL,
+        "author" TEXT NOT NULL,
+        "body" TEXT NOT NULL,
+        "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (entry_id) REFERENCES entries(id)
+        )'''
 
-cur.execute(create_table) 
-
-con.commit() 
-
+cur.execute(create_entries)
+cur.execute(create_responses)
+con.commit()
 con.close()
+print("Tables created!")

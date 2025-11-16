@@ -10,13 +10,14 @@ def index():
     cur = con.cursor()
     cur.execute("SELECT * FROM entries")
     data = cur.fetchall()
+    cur.execute("SELECT * FROM responses") 
+    datas = cur.fetchall()
+    
     con.close()
 
     print("Data", data) 
+    print(datas)
     print("Length", len(data))
-
-    if not data: 
-        return " No entries yet "
 
     return render_template("index.html", datas=data)
 
@@ -30,5 +31,12 @@ def add_entry():
     cur.execute("INSERT INTO entries (author, body) VALUES (?,?)", (author, body))
     con.commit() 
     con.close() 
+
+    return redirect("/")
+
+@app.route('/addResponse', methods=["POST"])
+def add_response(): 
+    id_response = request.args.get('reply_to')
+    print("id_response")
 
     return redirect("/")
