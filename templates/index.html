@@ -14,24 +14,49 @@
       <button type="submit">Submit</button>
     </form>
     </div> 
-    
-    </div>
-    <h2>response</h2> 
-    <form action="/addResponse" method="POST"> 
-      <input type="text" name="author" placeholder="Username" required> 
-      <input type="text" name="body" placeholder="Message" required> 
-        <button type="submut">Submit</button> 
-    </form> 
-    </div>
+    <hr>
 
-    <h2>Entries</h2>
     {% for entry in datas %}
     <div>
-        <strong>{{ entry[1] }}</strong>: {{ entry[2] }}
-        <small>({{ entry[3] }})</small>
-        <a href="/?reply_to={{ entry[0] }}">Reply</a>
+      <strong>{{ entry[1] }}</strong>: {{ entry[2] }}
+      <small>({{ entry[3] }})</small>
+
+      {% if entry[4] > 0 %} 
+
+        <button onclick="toggleReplies({{ entry[0] }})" id="btn-{{ entry[0] }}">
+
+
+        Show {{ entry[4] }} replies
+      </button>
+
+      {% endif %}
+
+      <div id="replies-{{ entry[0] }}" style="display: none;">
+        {% for response in all_responses %} 
+        {% if response[1] == entry[0] %} 
+        <div style="margin-left: 20px;">
+          <p><strong>{{ response[1] }}</strong>: {{ response[2] }}</p>
+        </div>
+        {% endif %} 
+        {% endfor %}
+      </div>
     </div>
     {% endfor %}
+
+    <script>
+      function toggleReplies(entryId) {
+        var repliesDiv = document.getElementById('replies-' + entryId);
+        var button = document.getElementById('btn-' + entryId);
+
+        if (repliesDiv.style.display === 'none') {
+          repliesDiv.style.display = 'block';
+          button.textContent = 'Hide replies';
+        } else {
+          repliesDiv.style.display = 'none';
+          button.textContent = 'Show replies';
+        }
+      }
+    </script>
   </body>
 </html> 
 
