@@ -13,6 +13,7 @@
       <input type="text" name="body" placeholder="Message" required> 
       <button type="submit">Submit</button>
     </form>
+    <span id="replyto"> </span>
     </div> 
     <hr>
 
@@ -21,9 +22,13 @@
       <strong>{{ entry[1] }}</strong>: {{ entry[2] }}
       <small>({{ entry[3] }})</small>
 
+
+      <button onclick="respond({{ entry[0] }}, '{{ entry[1] }}')" id="res-{{ entry[0] }}"> Reply </button>
+
       {% if entry[4] > 0 %} 
 
-        <button onclick="toggleReplies({{ entry[0] }})" id="btn-{{ entry[0] }}">
+
+      <button onclick="toggleReplies({{ entry[0] }}, {{ entry[4] }})" id="btn-{{ entry[0] }}">
 
 
         Show {{ entry[4] }} replies
@@ -35,7 +40,7 @@
         {% for response in all_responses %} 
         {% if response[1] == entry[0] %} 
         <div style="margin-left: 20px;">
-          <p><strong>{{ response[1] }}</strong>: {{ response[2] }}</p>
+          <p><strong>{{ entry[1] }}</strong>: {{ response[2] }}</p>
         </div>
         {% endif %} 
         {% endfor %}
@@ -44,7 +49,7 @@
     {% endfor %}
 
     <script>
-      function toggleReplies(entryId) {
+      function toggleReplies(entryId, replies) {
         var repliesDiv = document.getElementById('replies-' + entryId);
         var button = document.getElementById('btn-' + entryId);
 
@@ -53,8 +58,17 @@
           button.textContent = 'Hide replies';
         } else {
           repliesDiv.style.display = 'none';
-          button.textContent = 'Show replies';
+          button.textContent = 'Show ' + replies + ' replies';
         }
+      }
+    </script>
+    <script> 
+      function respond(entryId, person){
+        var replyTo = document.getElementById('replyto')
+
+        replyTo.textContent = "replying " + person 
+
+        console.log(entryId)
       }
     </script>
   </body>
