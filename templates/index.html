@@ -1,20 +1,22 @@
-<!DOCTYPE html> 
-<html> 
-  <head> 
+<!DOCTYPE html>
+<html>
+  <head>
     <title>Guestbook</title>
-  </head> 
-  <body> 
-    <h1>Guestbook</h1> 
+    <link rel="stylesheet" href="/static/styles/styles.css">
+  </head>
+  <body class="azeret-text">
+    <h1>Guestbook</h1>
 
     <div>
     <h2>Leave a message</h2>
-    <form action="/add" method="POST"> 
+    <form action="/add" method="POST" id="message-form">
+      <input type="hidden" name="id_entry" id="entry-id" value="">
       <input type="text" name="author" placeholder="Username" required>
-      <input type="text" name="body" placeholder="Message" required> 
+      <input type="text" name="body" placeholder="Message" required>
       <button type="submit">Submit</button>
     </form>
     <span id="replyto"> </span>
-    </div> 
+    </div>
     <hr>
 
     {% for entry in datas %}
@@ -25,7 +27,7 @@
 
       <button onclick="respond({{ entry[0] }}, '{{ entry[1] }}')" id="res-{{ entry[0] }}"> Reply </button>
 
-      {% if entry[4] > 0 %} 
+      {% if entry[4] > 0 %}
 
 
       <button onclick="toggleReplies({{ entry[0] }}, {{ entry[4] }})" id="btn-{{ entry[0] }}">
@@ -37,12 +39,12 @@
       {% endif %}
 
       <div id="replies-{{ entry[0] }}" style="display: none;">
-        {% for response in all_responses %} 
-        {% if response[1] == entry[0] %} 
+        {% for response in all_responses %}
+        {% if response[1] == entry[0] %}
         <div style="margin-left: 20px;">
           <p><strong>{{ entry[1] }}</strong>: {{ response[2] }}</p>
         </div>
-        {% endif %} 
+        {% endif %}
         {% endfor %}
       </div>
     </div>
@@ -62,15 +64,23 @@
         }
       }
     </script>
-    <script> 
+    <script>
       function respond(entryId, person){
+        var form = document.getElementById('message-form')
+        var entryIdInput = document.getElementById('entry-id')
+        var formTitle = document.getElementById('form-title')
         var replyTo = document.getElementById('replyto')
 
-        replyTo.textContent = "replying " + person 
+        replyTo.textContent = "replying " + person
+
+        form.action = '/addResponse';
+        entryIdInput.value = entryId;
+        formTitle.textContent = 'Reply to ' + person;
+        replyTo.textContent = 'Replying to ' + person;
+
 
         console.log(entryId)
       }
     </script>
   </body>
-</html> 
-
+</html>
