@@ -1,4 +1,5 @@
 import re
+from typing_extensions import Reversible
 from flask import Flask, render_template, request, redirect,url_for, flash
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -30,15 +31,14 @@ def index():
     cur = con.cursor()
     cur.execute("SELECT entries.*, COUNT(responses.id) AS reply_count FROM ENTRIES LEFT JOIN responses ON entries.id = responses.entry_id GROUP BY entries.id")
     data = cur.fetchall()
+    data = list(reversed(data))
 
     cur.execute("SELECT * FROM responses")
     all_responses = cur.fetchall()
 
-    con.close()
+    print(all_responses)
 
-    print("Data", data)
-    print("Length", len(data))
-    print("this is the reply id", entry_id)
+    con.close()
 
     return render_template("index.html", datas=data, entry_id=entry_id, all_responses=all_responses)
 

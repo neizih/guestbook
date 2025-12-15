@@ -45,7 +45,7 @@
       {% endif %}
 
       <div id="replies-{{ entry[0] }}" style="display: none;">
-        {% for response in all_responses %}
+        {% for response in all_responses|reverse %}
         {% if response[1] == entry[0] %}
         <div style="margin: 8px 8px 0px 12px">
           - <span><strong>{{ response[2] }}</strong>: {{ response[3] }}</span>
