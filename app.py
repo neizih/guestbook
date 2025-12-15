@@ -1,12 +1,26 @@
+import re
 from flask import Flask, render_template, request, redirect,url_for, flash
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import sqlite3 as sql
 
 app = Flask(__name__)
+
+limiter = Limiter(
+    app=app,
+    key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"]
+)
+
+app.secret_key = 'anything-you-want-here-1234568'
 
 @app.route("/about")
 def about():
     return render_template('about.html')
 
+@app.route("/aboutes")
+def aboutes():
+    return render_template('aboutes.html')
 
 @app.route("/")
 @app.route("/index")
@@ -29,15 +43,18 @@ def index():
     return render_template("index.html", datas=data, entry_id=entry_id, all_responses=all_responses)
 
 @app.route('/add', methods=["POST"])
+@limiter.limit("You have exceeded the permitted limit")
 def add_entry():
     author = request.form['author']
     body = request.form['body']
 
-    if not author or not body:
-        return redirect("/")
+    if len(body) > 250:
+        flash("Your message is way too long!")
+        return redirect('/')
 
-    if len(author) > 30 or len(body) > 250:
-       return redirect('/')
+    if len(author) > 30:
+        flash("Your username is way too long!")
+        return redirect('/')
 
     con = sql.connect("database.db")
     cur = con.cursor()
@@ -52,6 +69,15 @@ def add_response():
     entry_id = request.form['id_entry']
     author = request.form['author']
     body = request.form['body']
+
+    if len(author) > 30:
+        flash("Your username is way too long!")
+        return redirect('/')
+
+    if len(body) > 250:
+       flash("Your message is way too long!")
+       return redirect('/')
+
     con = sql.connect('database.db')
     cur = con.cursor()
     cur.execute("INSERT INTO responses (author, body, entry_id) VALUES (?,?,?)", (author, body, entry_id))
@@ -59,3 +85,6 @@ def add_response():
     con.close()
 
     return redirect("/")
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)

@@ -3,6 +3,7 @@
   <head>
     <title>Guestbook</title>
     <link rel="stylesheet" href="/static/styles/styles.css">
+    <link rel="icon" href="/static/favico.jpg">
   </head>
   <body class="azeret-text">
       <div class="title">
@@ -85,5 +86,11 @@
         console.log(entryId)
       }
     </script>
+    {% for message in get_flashed_messages() %}
+      <script>
+        alert("{{ message }}");
+      </script>
+    {% endfor %}
+    <a href="https://nezi.xyz/"><-</a>
   </body>
 </html>
