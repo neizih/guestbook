@@ -7,22 +7,72 @@
 }
 
 body{
+    padding-top: 130px;
     background: #E1E1E1;
-    width: 1251px;
     margin: auto;
-    align-content: center;
+    vertical-align: middle;
+    width: 820px;
 }
 
 input[type=text]{
-    box-sizing: border-box;
-    padding: 3px;
+    padding: 4px;
+    border: 0px;
     background: #E1E1E1;
+    background: #D9D9D9;
     box-shadow: 0;
+    font-family: "Azeret Mono", serif;
     border-radius: 0px;
-    border: 1px solid black;
 }
 
 input:focus {
+    border: none;
     outline: none;
-    border: 1px; /* or border: 0px; */
+}
+
+.title{
+    font-size: 64px;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.about{
+    padding: 0 0 20px 0;
+}
+
+a{
+    color: blue;
+}
+
+button,
+input[type="submit"]{
+    font-family: "Azeret Mono", serif;
+    background: #E1E1E1;
+    border: none;
+    outline: none;
+    color: blue;
+}
+
+hr{
+    margin: 2-px 0;
+}
+
+.button:hover{
+    cursor: pointer;
+    text-decoration: underline;
+
+}
+
+.response-text:hover{
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.show-reply{
+    color: blue;
+}
+
+.show-reply:hover{
+    cursor: pointer;
+    text-decoration: underline;
 }

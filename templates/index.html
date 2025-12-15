@@ -5,44 +5,49 @@
     <link rel="stylesheet" href="/static/styles/styles.css">
   </head>
   <body class="azeret-text">
-    <h1>Guestbook</h1>
+      <div class="title">
+          <span>Guestbook</span>
+      </div>
 
     <div>
-    <h2>Leave a message</h2>
+
+    <div class="about"
+        <span></apsn><a href="about">about.html</a></span>
+    </div>
+
     <form action="/add" method="POST" id="message-form">
       <input type="hidden" name="id_entry" id="entry-id" value="">
       <input type="text" name="author" placeholder="Username" required>
       <input type="text" name="body" placeholder="Message" required>
-      <button type="submit">Submit</button>
+      <button class="button" type="submit">Submit</button>
     </form>
-    <span id="replyto"> </span>
+    <div style="margin: 12px 0">
+        <span id="replyto"> </span>
     </div>
+    </div>
+
     <hr>
 
     {% for entry in datas %}
-    <div>
-      <strong>{{ entry[1] }}</strong>: {{ entry[2] }}
-      <small>({{ entry[3] }})</small>
+    <div style="margin-bottom: 10px; ">
+      <strong>{{ entry[1] }}</strong>: <span class="response-text" onclick="respond({{ entry[0] }}, '{{ entry[1] }}')" id="res-{{ entry[0] }}">{{ entry[2] }}</span>
+      <small>[{{ entry[3][:10] }}]</small>
 
-
-      <button onclick="respond({{ entry[0] }}, '{{ entry[1] }}')" id="res-{{ entry[0] }}"> Reply </button>
 
       {% if entry[4] > 0 %}
 
 
-      <button onclick="toggleReplies({{ entry[0] }}, {{ entry[4] }})" id="btn-{{ entry[0] }}">
-
-
+      <span class="show-reply" onclick="toggleReplies({{ entry[0] }}, {{ entry[4] }})" id="btn-{{ entry[0] }}">
         Show {{ entry[4] }} replies
-      </button>
+      </span>
 
       {% endif %}
 
       <div id="replies-{{ entry[0] }}" style="display: none;">
         {% for response in all_responses %}
         {% if response[1] == entry[0] %}
-        <div style="margin-left: 20px;">
-          <p><strong>{{ entry[1] }}</strong>: {{ response[2] }}</p>
+        <div style="margin: 8px 8px 0px 12px">
+          - <span><strong>{{ response[2] }}</strong>: {{ response[3] }}</span>
         </div>
         {% endif %}
         {% endfor %}
@@ -71,12 +76,10 @@
         var formTitle = document.getElementById('form-title')
         var replyTo = document.getElementById('replyto')
 
-        replyTo.textContent = "replying " + person
+        replyTo.textContent = "Replying to " + person
 
         form.action = '/addResponse';
         entryIdInput.value = entryId;
-        formTitle.textContent = 'Reply to ' + person;
-        replyTo.textContent = 'Replying to ' + person;
 
 
         console.log(entryId)

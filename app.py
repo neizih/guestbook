@@ -1,50 +1,61 @@
 from flask import Flask, render_template, request, redirect,url_for, flash
-import sqlite3 as sql 
+import sqlite3 as sql
 
-app = Flask(__name__) 
+app = Flask(__name__)
 
-@app.route("/") 
-@app.route("/index") 
-def index(): 
+@app.route("/about")
+def about():
+    return render_template('about.html')
+
+
+@app.route("/")
+@app.route("/index")
+def index():
     entry_id = request.args.get('reply_to')
     con = sql.connect("database.db")
     cur = con.cursor()
     cur.execute("SELECT entries.*, COUNT(responses.id) AS reply_count FROM ENTRIES LEFT JOIN responses ON entries.id = responses.entry_id GROUP BY entries.id")
-    data = cur.fetchall()  
+    data = cur.fetchall()
 
     cur.execute("SELECT * FROM responses")
     all_responses = cur.fetchall()
 
     con.close()
 
-    print("Data", data) 
+    print("Data", data)
     print("Length", len(data))
     print("this is the reply id", entry_id)
 
     return render_template("index.html", datas=data, entry_id=entry_id, all_responses=all_responses)
 
 @app.route('/add', methods=["POST"])
-def add_entry(): 
+def add_entry():
     author = request.form['author']
     body = request.form['body']
 
-    con = sql.connect("database.db") 
-    cur = con.cursor() 
+    if not author or not body:
+        return redirect("/")
+
+    if len(author) > 30 or len(body) > 250:
+       return redirect('/')
+
+    con = sql.connect("database.db")
+    cur = con.cursor()
     cur.execute("INSERT INTO entries (author, body) VALUES (?,?)", (author, body))
-    con.commit() 
-    con.close() 
+    con.commit()
+    con.close()
 
     return redirect("/")
 
 @app.route('/addResponse', methods=["POST"])
-def add_response(): 
+def add_response():
     entry_id = request.form['id_entry']
     author = request.form['author']
     body = request.form['body']
-    con = sql.connect('database.db') 
-    cur = con.cursor() 
+    con = sql.connect('database.db')
+    cur = con.cursor()
     cur.execute("INSERT INTO responses (author, body, entry_id) VALUES (?,?,?)", (author, body, entry_id))
-    con.commit() 
+    con.commit()
     con.close()
 
     return redirect("/")

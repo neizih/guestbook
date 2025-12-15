@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&display=swap');
+
+.azeret-text {
+  font-family: "Azeret Mono", serif;
+  font-optical-sizing: auto;
+  font-style: 500;
+}
+
+
+
+body{
+	margin:auto;
+	width: 600px;;
+	align-items: center;
+	vertical-align:top;
+	background: #E1E1E1;
+}
+
+#title{
+	font-size: 28px;
+	font-weight: bold;
+}
+
+#date{
+	size:14px;
+	margin-top: 5px;
+}
+
+.head{
+	margin-top:15px;
+}
+
+img{
+	display: block;
+	margin:auto;
+	height: auto ;
+	max-width: 100%;
+	padding: 20px 0 0 0;
+}
+
+#content{
+	text-align: justify;
+	margin:auto;
+}
+
+p{
+	font-size: 14px;
+}
+
+
+pre{
+  border-radius: 15px;
+}
+
+pre code {
+    display: block;
+    background: rgba(30, 30, 30, 0.85);
+    padding: 1rem;
+    border-radius: 12px;
+    font-family: "Fira Code", "JetBrains Mono", monospace;
+    font-size: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); /* soft shadow */
+}
+
+a:visited {
+	color: #000EEE;
+}
+
+a{
+	color:blue
+}
+
+.laguage-switcher{
+	color: blue;
+}
+
+.language-switcher:visited{
+	color: blue;
+}
