@@ -3,8 +3,8 @@ import sqlite3 as sql
 con = sql.connect('database.db')
 cur = con.cursor()
 
-cur.execute("DROP TABLE IF EXISTS entries")
-cur.execute("DROP TABLE IF EXISTS responses")
+cur.execute("DROP TABLE IF NOT EXISTS entries")
+cur.execute("DROP TABLE IF NOT EXISTS responses")
 
 create_entries = '''CREATE TABLE "entries"(
         "id" INTEGER PRIMARY KEY AUTOINCREMENT,

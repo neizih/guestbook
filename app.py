@@ -15,6 +15,8 @@ limiter = Limiter(
 
 app.secret_key = 'anything-you-want-here-1234568'
 
+app.secret_key = os.environ.get('SECRET_KEY')
+
 @app.route("/about")
 def about():
     return render_template('about.html')
