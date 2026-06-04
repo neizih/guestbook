@@ -3,9 +3,6 @@ import sqlite3 as sql
 con = sql.connect('database.db')
 cur = con.cursor()
 
-cur.execute("DROP TABLE IF NOT EXISTS entries")
-cur.execute("DROP TABLE IF NOT EXISTS responses")
-
 create_entries = '''CREATE TABLE "entries"(
         "id" INTEGER PRIMARY KEY AUTOINCREMENT,
         "author" TEXT NOT NULL,
