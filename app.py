@@ -13,8 +13,6 @@ limiter = Limiter(
     default_limits=["200 per day", "50 per hour"]
 )
 
-app.secret_key = 'anything-you-want-here-1234568'
-
 app.secret_key = os.environ.get('SECRET_KEY')
 
 @app.route("/about")
