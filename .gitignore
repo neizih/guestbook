@@ -1,5 +1,7 @@
 .venv/
 venv/
+.env
+database.db
 **/__pycache__/
 *.pyc 
 .git
