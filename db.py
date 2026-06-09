@@ -1,26 +1,31 @@
-import sqlite3 as sql
+import os
+import psycopg2
 
-con = sql.connect('database.db')
+con = psycopg2.connect(
+  host=os.environ.get('DB_HOST', 'localhost'),
+  port=os.environ.get('DB_PORT', '5432'),
+  dbname=os.environ.get('DB_NAME', 'guestbook'),
+  user=os.environ.get('DB_USER', 'postgres'),
+  password=os.environ.get('DB_PASSWORD', '')
+)
 cur = con.cursor()
 
-create_entries = '''CREATE TABLE "entries"(
-        "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-        "author" TEXT NOT NULL,
-        "body" TEXT NOT NULL,
-        "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )'''
+cur.execute('''CREATE TABLE IF NOT EXISTS entries (
+  id SERIAL PRIMARY KEY,
+  author TEXT NOT NULL,
+  body TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)''')
 
-create_responses = '''CREATE TABLE "responses"(
-        "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-        "entry_id" INTEGER NOT NULL,
-        "author" TEXT NOT NULL,
-        "body" TEXT NOT NULL,
-        "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (entry_id) REFERENCES entries(id)
-        )'''
+cur.execute('''CREATE TABLE IF NOT EXISTS responses (
+  id SERIAL PRIMARY KEY,
+  entry_id INTEGER NOT NULL REFERENCES entries(id),
+  author TEXT NOT NULL,
+  body TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)''')
 
-cur.execute(create_entries)
-cur.execute(create_responses)
 con.commit()
 con.close()
 print("Tables created!")
+
