@@ -37,8 +37,8 @@ def index():
   entry_id = request.args.get('reply_to')
   con = get_db()
   cur = con.cursor()
-  cur.execute("SELECT entries.*, COUNT(responses.id) AS reply_count FROM entries LEFT JOIN responses ON entries.id =
-responses.entry_id GROUP BY entries.id")
+  cur.execute("""SELECT entries.*, COUNT(responses.id) AS reply_count FROM entries LEFT JOIN responses ON entries.id =
+responses.entry_id GROUP BY entries.id""")
   data = cur.fetchall()
   data = list(reversed(data))
 

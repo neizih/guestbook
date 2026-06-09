@@ -1,0 +1,32 @@
+services:
+  pg:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: guestbook
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d guestbook"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  web:
+    build: .
+    ports:
+      - "8000:5000"
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      DB_HOST: pg
+      DB_NAME: guestbook
+      DB_USER: postgres
+      DB_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      pg:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+

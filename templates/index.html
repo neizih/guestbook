@@ -32,7 +32,7 @@
     {% for entry in datas %}
     <div style="margin-bottom: 10px; ">
       <strong>{{ entry[1] }}</strong>: <span class="response-text" onclick="respond({{ entry[0] }}, '{{ entry[1] }}')" id="res-{{ entry[0] }}">{{ entry[2] }}</span>
-      <small>[{{ entry[3][:10] }}]</small>
+      <small>[{{ entry[3].strftime('%Y-%m-%d') }}]</small>
 
 
       {% if entry[4] > 0 %}
